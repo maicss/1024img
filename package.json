@@ -1,0 +1,25 @@
+{
+  "name": "1024-img",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "maicss",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
+    "express": "^4.15.3",
+    "iconv-lite": "^0.4.18",
+    "mongodb": "^2.2.29",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "tracer": "^0.8.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maicss/1024img.git"
+  }
+}
