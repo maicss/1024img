@@ -1,56 +1,64 @@
-const {urls, logger} = require('./settings');
-const fs = require('fs');
-const util = require('util');
+const {urls, logger} = require('./settings')
+const fs = require('fs')
+const util = require('util')
 
-const writeFile = util.promisify(fs.writeFile);
+const writeFile = util.promisify(fs.writeFile)
 
-const forumPostList = require('./getForumPostList');
-const getImagesFromPost = require('./getPostImages');
-const {save} = require('./DBOperator');
+const forumPostList = require('./getForumPostList')
+const getImagesFromPost = require('./getPostImages')
 
-async function mainTask(url) {
-    let postList = await forumPostList(url);
-    let allRequests = postList.map((postInfo, i)=> {
-        return new Promise((res, rej) => {
-            let getImageTimer = setTimeout(() => {
+const {save} = require('./DBOperator')
 
-                if (postInfo) {
+const sleep = async (ms) => {
+  return new Promise((res) => {
+    setTimeout(res, ms)
+  })
+}
 
-                    async function getSinglePostImage() {
-                        return res(await getImagesFromPost(postInfo))
-                    }
+async function mainTask (url) {
+  let postList = await forumPostList(url)
+  let allRequests = postList.map((postInfo, i) => {
+    return new Promise((res, rej) => {
+      let getImageTimer = setTimeout(() => {
 
-                    getSinglePostImage().catch(e => logger.error(e));
-                } else {
-                    clearTimeout(getImageTimer);
-                }
-            }, i * 5 * 1000);
-        });
-    });
+        if (postInfo) {
 
-    return Promise.all(allRequests).then(result => {
-        return result
-    }).catch(e => logger.error(e));
+          async function getSinglePostImage () {
+            return res(await getImagesFromPost(postInfo))
+          }
+
+          getSinglePostImage().catch(e => logger.error(e))
+        } else {
+          clearTimeout(getImageTimer)
+        }
+      }, i * 5 * 1000)
+    })
+  })
+
+  return Promise.all(allRequests).then(result => {
+    return result
+  }).catch(e => logger.error(e))
 
 }
 
-let mainTimer = setInterval(() => {
-    let url = urls.pop();
-    if (url) {
-        mainTask(url)
-            .then(result => {
-                logger.log(result.length);
-                saveToDB(result);
-                writeFile('firstPage.json', JSON.stringify(result))
-                    .then(logger.info('write file success'))
-                    .catch(e => logger.error(e))
-            })
-            .catch(e => logger.error(e));
-    } else {
-        clearInterval(mainTimer);
-    }
+// let mainTimer = setInterval(() => {
+//   let url = urls.pop()
+//   if (url) {
+//     mainTask(url)
+//       .then(result => {
+//         logger.log(result.length)
+//         saveToDB(result)
+//         writeFile('firstPage.json', JSON.stringify(result))
+//           .then(logger.info('write file success'))
+//           .catch(e => logger.error(e))
+//       })
+//       .catch(e => logger.error(e))
+//   } else {
+//     clearInterval(mainTimer)
+//   }
+//
+// }, 5 * 1000)
 
-}, 5 * 1000);
 
 
 

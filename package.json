@@ -10,6 +10,7 @@
   "author": "maicss",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.0",
     "cheerio": "^1.0.0-rc.1",
     "express": "^4.15.3",
     "iconv-lite": "^0.4.18",
