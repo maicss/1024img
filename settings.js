@@ -1,37 +1,47 @@
-const request = require("axios");
-const logger = require("tracer").colorConsole();
-
+const _request = require('request')
+const logger = require('tracer').colorConsole()
 
 const options = {
-    headers: {
-        "Host": "t66y.com",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-    },
-    "encoding": null,
-};
-request.defaults.headers.common['Host'] = "t66y.com"
-request.defaults.headers.common["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+  },
+  'encoding': null,
+}
+let r = _request.defaults(options)
 
-// DB config
+let DBUrl = 'mongodb://localhost:27017/1024'
 
-// const f = require('util').format;
-// const user = encodeURIComponent('xxx');
-// const password = encodeURIComponent('xxx');
-// const authMechanism = 'DEFAULT';
-//
-// let url = f('mongodb://%s:%s@localhost:27017/1024?authMechanism=%s',
-//     user, password, authMechanism);
+const ALL_PAGES = 1
+const baseUrl = 'http://t66y.com/thread0806.php?fid=16&page='
 
-let DBUrl = "mongodb://localhost:27017/1024";
+const urls = [...new Array(ALL_PAGES).keys()].map(i => baseUrl + (i + 1))
 
-const ALL_PAGES = 1;
-const baseUrl = "http://t66y.com/thread0806.php?fid=16&page=";
+const request = url => {
+  return new Promise((res, rej) => {
+    r.get(url, (err, resp) => {
+      if (err) return rej(err)
+      res(resp.body)
+    })
+  })
+}
 
-const urls = [...new Array(ALL_PAGES).keys()].map(i => baseUrl + (i + 1));
+const sleep = ms => {
+  return new Promise(rej => {
+    setTimeout(rej, ms)
+  })
+}
 
 module.exports = {
-    options,
-    request,
-    urls,
-    logger,
-};
+  request,
+  urls,
+  logger,
+  DBUrl,
+  sleep
+}
+
+if (require.main === module) {
+  const fs = require('fs')
+  request('https://www1.wi.to/2017/08/11/9c01e43e1652635563826de457b06e25.jpg').then(d=> {
+    fs.writeFileSync('aa.jpg', d)
+  }).catch(e => console.error(e))
+}

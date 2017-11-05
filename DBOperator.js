@@ -1,35 +1,59 @@
-const MongoClient = require('mongodb').MongoClient;
-const {DBUrl} = require('./settings');
-// const f = require('util').format;
-// const user = encodeURIComponent('blog');
-// const password = encodeURIComponent('blog:test');
-// const authMechanism = 'DEFAULT';
-//
-// let url = f('mongodb://%s:%s@localhost:27017/1024?authMechanism=%s',
-//     user, password, authMechanism);
+const MongoClient = require('mongodb').MongoClient
+const {DBUrl} = require('./settings')
 
-async function save(singlePageInfo) {
-    let db = await MongoClient.connect(DBUrl);
-    let r = await db.collection('dagaierTest').insertMany(singlePageInfo);
-    console.log(r);
+/**
+ * imageInfo Schema
+ *
+ *
+ * */
+
+async function save (singlePageInfo) {
+  let db = await MongoClient.connect(DBUrl)
+  return (await db.collection('1024Image').insertMany(singlePageInfo)).ops
 }
 
-async function read() {
-    const db = await MongoClient.connect(DBUrl);
-    return await db.collection('dagaierTest').findOne({"hasDownloaded": {$exist: false}});
+const update = async (id, flag) => {
+  const db = await MongoClient.connect(DBUrl)
+  const imageInfo = await db.collection('1024Image').findOne({id})
+  if (imageInfo) {
+    imageInfo.hasDownloaded = flag
+  } else {
+    return 'no image find by id: ' + id
+  }
+  return (await db.collection('1024Image').findOneAndUpdate({id}, imageInfo)).ok
+}
+
+async function read () {
+  const db = await MongoClient.connect(DBUrl)
+  return await db.collection('1024Image').findOne({'hasDownloaded': false})
 }
 
 module.exports = {
-    save,
-    read
-};
+  save,
+  read,
+  update
+}
 
 if (require.main === module) {
-    const fs = require('fs');
+  const imageInfo = {
+    postTitle: '[皇族搬运工]我不生产图片我只是图片的搬运工-还是比较有诱惑力的[10P]',
+    postUrl: 'http://t66y.com/htm_data/16/1711/2752686.html',
+    highlight: true,
+    imageIndex: 1,
+    imageUrl: 'http://www.s9tu.com/images/2017/10/19/6360be.jpg',
+    date: '2017-11-05 14:33',
+    id: '2752686I1',
+    hasDownloaded: false
+  };
 
-    let data = JSON.parse(fs.readFileSync('./firstPage.json').toString());
-    data = data.filter(d => !!d);
-    console.log(data.length);
-    save(data).catch(e => console.error(e));
+  (async () => {
+      // const saveRes = await save([imageInfo])
+      const readRes = await read()
+      // const updateRes = await update('2752686I2', true)
+      // console.log(saveRes)
+      console.log(readRes)
+      // console.log(updateRes)
+    }
+  )()
 }
 
