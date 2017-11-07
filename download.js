@@ -29,7 +29,7 @@ const downloader = imageInfo => {
       if (await downloader(imageInfo) === 'done') {
         const updateRes = await update(imageInfo.id, true)
         if (updateRes === 1) {
-          logger.info(`download image ${imageInfo.postTitle + '--' + imageInfo.id} successful`)
+          logger.info(`download image ${imageInfo.id} successful`)
         } else {
           logger.warn('update res: ', updateRes)
         }
