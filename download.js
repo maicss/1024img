@@ -3,6 +3,8 @@ const path = require('path')
 const {logger, request} = require('./settings')
 const {read, update} = require('./DBOperator')
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const downloader = imageInfo => {
   logger.info(`downloading ${imageInfo.imageUrl}`)
   return new Promise((res, rej) => {
