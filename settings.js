@@ -1,6 +1,8 @@
 const _request = require('request')
 const logger = require('tracer').colorConsole()
 
+let {DBUrl} = require('./env')
+
 const options = {
   headers: {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
@@ -9,7 +11,7 @@ const options = {
 }
 let r = _request.defaults(options)
 
-let DBUrl = 'mongodb://localhost:27017/1024'
+DBUrl = DBUrl || 'mongodb://localhost:27017/1024'
 
 const ALL_PAGES = 1
 const baseUrl = 'http://t66y.com/thread0806.php?fid=16&page='
@@ -37,11 +39,4 @@ module.exports = {
   logger,
   DBUrl,
   sleep
-}
-
-if (require.main === module) {
-  const fs = require('fs')
-  request('https://www1.wi.to/2017/08/11/9c01e43e1652635563826de457b06e25.jpg').then(d=> {
-    fs.writeFileSync('aa.jpg', d)
-  }).catch(e => console.error(e))
 }

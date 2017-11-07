@@ -14,7 +14,6 @@
     "iconv-lite": "^0.4.19",
     "mongodb": "^2.2.33",
     "request": "latest",
-    "request-promise": "latest",
     "tracer": "^0.8.11"
   },
   "repository": {
