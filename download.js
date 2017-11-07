@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const {logger, sleep, request} = require('./settings')
+const {logger, request} = require('./settings')
 const {read, update} = require('./DBOperator')
 
 const downloader = imageInfo => {
@@ -12,7 +12,7 @@ const downloader = imageInfo => {
       })
     }
     request(imageInfo.imageUrl).then(buf => {
-      fs.writeFile(imageInfo.postTitle + '/' + imageInfo.id + '.' + path.parse(imageInfo.imageUrl).ext, buf, err => {
+      fs.writeFile(imageInfo.postTitle + '/' + imageInfo.id + path.parse(imageInfo.imageUrl).ext, buf, err => {
         if (err) return rej(err)
         return res('done')
       })
@@ -27,8 +27,7 @@ const downloader = imageInfo => {
       if (await downloader(imageInfo) === 'done') {
         const updateRes = await update(imageInfo.id, true)
         if (updateRes === 1) {
-          await sleep(1000)
-          logger.info(`download image ${imageInfo.imageUrl} successful`)
+          logger.info(`download image ${imageInfo.postTitle + '--' + imageInfo.id} successful`)
         } else {
           logger.warn('update res: ', updateRes)
         }
