@@ -1,6 +1,6 @@
 import {MongoClient} from 'mongodb'
 import {mongoUrl, DBName} from './settings'
-import {PostInfoWithImages} from "./Interface"
+import {PostInfoWithImages} from "./Interfaces"
 
 const save = async (singlePageInfo:PostInfoWithImages) => {
     let client = await MongoClient.connect(mongoUrl)

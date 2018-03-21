@@ -7,7 +7,7 @@ const _request = r.defaults({
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
     },
     encoding: null
-});
+})
 const mongoUrl = 'mongodb://localhost:27017/'
 const DBName = '1024'
 

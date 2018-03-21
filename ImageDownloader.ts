@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {logger, request} from './settings'
 import {read, update} from './DataBaseOperator'
-import {PostInfoWithImages, SingleImage} from "./Interface"
+import {PostInfoWithImages, SingleImage} from "./Interfaces"
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 

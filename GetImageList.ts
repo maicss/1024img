@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio'
 import * as path from 'path'
 
 import {request, logger} from './settings'
-import {PostInfo, SingleImage} from './Interface'
+import {PostInfo, SingleImage} from './Interfaces'
 
 async function getImagesFromPost (postInfo: PostInfo) {
     const imageInfoList: SingleImage[]= []

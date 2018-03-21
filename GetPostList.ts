@@ -1,7 +1,7 @@
 import * as iconv from 'iconv-lite'
 import * as cheerio from 'cheerio'
 import {request, logger} from './settings'
-import {PostInfo} from "./Interface"
+import {PostInfo} from "./Interfaces"
 
 export default async (url: string) : Promise<PostInfo[]>=> {
     logger.info(`requesting [${url}]`)
@@ -14,11 +14,11 @@ export default async (url: string) : Promise<PostInfo[]>=> {
         let tr = trs[i]
         let postTd = $(tr).find('td.tal')
         let url = postTd.find('a').attr('href')
-        let postName, highlight=false;
+        let postName, highlight=false
         if (postTd.length) {
             if ($(postTd).has('font').length) {
                 if ($(postTd).has('font[color="green"]').length) {
-                    postName = $(postTd).find('font').text().trim();
+                    postName = $(postTd).find('font').text().trim()
                     highlight = true
                 } else {
                     continue

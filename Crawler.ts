@@ -1,7 +1,8 @@
 import {logger, sleep, urls} from './settings'
-const getPostList = require('./getForumPostList')
-const getImageList = require('./getPostImages')
-const {save} = require('./DBOperator');
+import getPostList from './GetPostList'
+import getImageList from './GetImageList'
+import {save} from './DataBaseOperator'
+import {PostInfo, PostInfoWithImages} from "./Interfaces"
 
 (async () => {
     try {
