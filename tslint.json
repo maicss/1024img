@@ -1,3 +1,5 @@
 {
-  "semicolon": [true, "never"]
+  "rules": {
+    "semicolon": [true, "never"]
+  }
 }
