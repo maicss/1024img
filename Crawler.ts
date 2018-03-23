@@ -1,30 +1,25 @@
 import {logger, sleep, urls} from './settings'
-import getPostList from './GetPostList'
-import getImageList from './GetImageList'
+import GetPostList from './GetPostList'
+import GetImageList from './GetImageList'
 import {save} from './DataBaseOperator'
-import {PostInfo, PostInfoWithImages} from "./Interfaces"
+import {PostInfo, PostInfoWithImages, SingleImage} from "./Interfaces"
 
-(async () => {
-    try {
-        for (let i = 0; i < urls.length; i++) {
-            const postList = await getPostList(urls[i])
-            for (let j = 0; j < postList.length; j++) {
-                await sleep(2000)
-                const imageList = await getImageList(postList[j])
-                if (imageList.length){
-                    const saveRes = await save(imageList)
-                    console.assert(saveRes.length === imageList.length)
-                } else {
-                    logger.warn(`post ${postList[j]} get no images`)
+export default async () => {
+    for (let url of  urls) {
+        const postList: PostInfo[] = await GetPostList(url)
+        for (let post of postList) {
+            await sleep(2000)
+            const imageList: SingleImage[] = await GetImageList(post)
+            if (imageList.length) {
+                let postInfo = <PostInfoWithImages>{
+                    ...post,
+                    images: imageList
                 }
+                await save(postInfo)
+            } else {
+                logger.warn(`post ${post.postUrl} get no images`)
             }
         }
-    } catch (e) {
-        logger.error(e)
     }
-})()
-
-const crawler = async () => {
-
+    return true
 }
-export{crawler}

@@ -24,13 +24,10 @@ const downloader = (imageInfo: SingleImage, dir: string): Promise<Error | 'done'
 
 }
 
-const download = async () => {
+export default async () => {
         let postInfo:PostInfoWithImages
         while (postInfo = await read()) {
             for (let image of postInfo.images) {
-                if (image.retryTime === 3) {
-                    continue
-                }
                 const downloadRes = await downloader(image, postInfo.postName)
                 if (downloadRes === 'done') {
                     const updateRes = await update(postInfo.id, true)
@@ -49,5 +46,3 @@ const download = async () => {
             }
         }
 }
-
-export {download}

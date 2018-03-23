@@ -4,7 +4,7 @@
     "target": "es2017",
     "sourceMap": true,
     "noImplicitAny": true,
-    "allowJs": true
+    "allowJs": false
   },
   "include": [
     "*.ts"

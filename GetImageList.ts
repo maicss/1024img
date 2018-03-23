@@ -5,7 +5,7 @@ import * as path from 'path'
 import {request, logger} from './settings'
 import {PostInfo, SingleImage} from './Interfaces'
 
-async function getImagesFromPost (postInfo: PostInfo) {
+export default async (postInfo: PostInfo): Promise<SingleImage[]> =>  {
     const imageInfoList: SingleImage[]= []
     logger.info(`requesting post [${postInfo.postUrl}] images url`)
     let htmlStream = await request(postInfo.postUrl)
@@ -25,5 +25,3 @@ async function getImagesFromPost (postInfo: PostInfo) {
 }
 
 // getImagesFromPost({url: 'http://t66y.com/htm_data/16/1803/3049624.html'}).then(a => console.log(a)).catch(e => console.log(1, e))
-
-export default getImagesFromPost;

@@ -3,18 +3,18 @@ import * as cheerio from 'cheerio'
 import {request, logger} from './settings'
 import {PostInfo} from "./Interfaces"
 
-export default async (url: string) : Promise<PostInfo[]>=> {
+export default async (url: string): Promise<PostInfo[]> => {
     logger.info(`requesting [${url}]`)
     await request(url)
 
     let $ = cheerio.load(iconv.decode(await request(url), 'GBK'))
     let trs = $('tr.tr3.t_one.tac')
-    let posts:PostInfo[]= []
+    let posts: PostInfo[] = []
     for (let i = 0; i < trs.length; i++) {
         let tr = trs[i]
         let postTd = $(tr).find('td.tal')
         let url = postTd.find('a').attr('href')
-        let postName, highlight=false
+        let postName, highlight = false
         if (postTd.length) {
             if ($(postTd).has('font').length) {
                 if ($(postTd).has('font[color="green"]').length) {
