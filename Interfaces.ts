@@ -5,6 +5,7 @@ interface PostInfo {
     postTime: string
     postUrl: string
     highlight: boolean
+    done?: boolean
 }
 
 interface SingleImage {

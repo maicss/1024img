@@ -6,10 +6,12 @@ const _request = r.defaults({
     headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64 x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
     },
-    encoding: null
+    encoding: null,
+    timeout: 10 * 1000
 })
 const mongoUrl = 'mongodb://localhost:27017/'
 const DBName = '1024'
+const collectionName = '1024Image'
 
 // 所有需要爬的页面，默认20页，也就是180个帖子左右
 const ALL_PAGES = 20
@@ -33,11 +35,15 @@ const request = (url:string):Promise<Buffer> => {
     })
 }
 
+const distDirName = 'Images'
+
 export {
     request,
     urls,
     logger,
     mongoUrl,
     sleep,
-    DBName
+    DBName,
+    distDirName,
+    collectionName
 }

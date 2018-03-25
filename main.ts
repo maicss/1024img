@@ -1,7 +1,12 @@
 import crawler from './Crawler'
+import {logger} from "./settings"
 import download from './ImageDownloader'
 
 (async () => {
-    // await crawler()
-    await download()
+    try {
+        await crawler()
+        await download()
+    } catch (e) {
+        logger.error(e)
+    }
 })()

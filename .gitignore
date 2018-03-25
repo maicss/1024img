@@ -6,3 +6,4 @@ node_modules
 *.gif
 *.js
 *.js.map
+Images/*
