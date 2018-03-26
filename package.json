@@ -13,6 +13,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "iconv-lite": "^0.4.19",
+    "inquirer": "^5.1.0",
     "mongodb": "^3.0.4",
     "request": "^2.85.0",
     "tracer": "^0.8.12"
@@ -22,6 +23,7 @@
     "url": "https://github.com/maicss/1024img.git"
   },
   "devDependencies": {
+    "@types/inquirer": "0.0.38",
     "@types/cheerio": "^0.22.7",
     "@types/mongodb": "*",
     "@types/node": "^9.4.7",

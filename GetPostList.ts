@@ -36,6 +36,3 @@ export default async (url: string): Promise<PostInfo[]> => {
     logger.info(`parser [${url}] successfully`)
     return posts
 }
-
-
-// forumPostList('http://t66y.com/thread0806.php?fid=16&search=&page=1').then(d => console.log(d)).catch(e => console.error(e))

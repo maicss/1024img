@@ -1,5 +1,4 @@
 
-
 interface PostInfo {
     postName: string
     postTime: string

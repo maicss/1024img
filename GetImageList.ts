@@ -23,5 +23,3 @@ export default async (postInfo: PostInfo): Promise<SingleImage[]> =>  {
     logger.info(`get post's [${postInfo.postUrl}] images url successfully`)
     return imageInfoList
 }
-
-// getImagesFromPost({url: 'http://t66y.com/htm_data/16/1803/3049624.html'}).then(a => console.log(a)).catch(e => console.log(1, e))
