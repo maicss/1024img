@@ -5,8 +5,6 @@ import {PostInfo} from "./Interfaces"
 
 export default async (url: string): Promise<PostInfo[]> => {
     logger.info(`requesting [${url}]`)
-    await request(url)
-
     let $ = cheerio.load(iconv.decode(await request(url), 'GBK'))
     let trs = $('tr.tr3.t_one.tac')
     let posts: PostInfo[] = []

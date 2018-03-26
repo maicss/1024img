@@ -28,10 +28,14 @@ const sleep = (ms: number): Promise<any> => {
 
 const request = (url:string):Promise<Buffer> => {
     return new Promise((res, rej) => {
-        _request.get(url, (err, resp) => {
-            if (err) return rej(err)
-            res(resp.body)
-        })
+        try {
+            _request.get(url, (err, resp) => {
+                if (err) return rej(err)
+                res(resp.body)
+            })
+        } catch (e) {
+            return Promise.reject(e)
+        }
     })
 }
 
