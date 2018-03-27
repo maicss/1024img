@@ -1,6 +1,17 @@
 import * as r from 'request'
 
-const logger = require('tracer').colorConsole()
+const shellLoggerSetting = {
+    format: [
+        // '{{timestamp}} [{{title}}] (in {{file}}:{{line}}) {{message}}', //default format
+        '{{timestamp}} [{{title}}] {{message}}', //default format
+        {
+            error: '{{timestamp}} [{{title}}] (in {{file}}:{{line}}) {{message}}\nCall Stack:\n{{stack}}' // error format
+        }
+    ],
+    dateformat: 'HH:MM:ss'
+}
+const logger = require('tracer').colorConsole(shellLoggerSetting)
+
 
 const _request = r.defaults({
     headers: {
@@ -26,6 +37,8 @@ const sleep = (ms: number): Promise<any> => {
     })
 }
 
+const WIN_DIR_RESERVED = /[.<>:/\\|"?*]+/
+
 const request = (url:string):Promise<Buffer> => {
     return new Promise((res, rej) => {
         try {
@@ -49,5 +62,6 @@ export {
     sleep,
     DBName,
     distDirName,
-    collectionName
+    collectionName,
+    WIN_DIR_RESERVED
 }

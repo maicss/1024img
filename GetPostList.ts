@@ -1,6 +1,6 @@
 import * as iconv from 'iconv-lite'
 import * as cheerio from 'cheerio'
-import {request, logger} from './settings'
+import {request, logger, WIN_DIR_RESERVED} from './settings'
 import {PostInfo} from "./Interfaces"
 
 export default async (url: string): Promise<PostInfo[]> => {
@@ -22,7 +22,7 @@ export default async (url: string): Promise<PostInfo[]> => {
                     continue
                 }
             } else {
-                postName = $(postTd).find('h3 a').text().trim()
+                postName = $(postTd).find('h3 a').text().trim().replace(WIN_DIR_RESERVED, ' ')
             }
             let poster = $(tr).find('a.f10')
             posts.push({
