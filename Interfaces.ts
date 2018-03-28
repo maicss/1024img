@@ -5,6 +5,7 @@ interface PostInfo {
     postUrl: string
     highlight: boolean
     done?: boolean
+    forum: string
 }
 
 interface SingleImage {

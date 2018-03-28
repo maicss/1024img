@@ -1,12 +1,12 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import {logger, request, distDirName} from './settings'
+import {logger, request} from './settings'
 import {read, update} from './DataBaseOperator'
 import {PostInfoWithImages, SingleImage} from "./Interfaces"
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
-const downloader = async (imageInfo: SingleImage, dir: string): Promise<string> => {
+const downloader = async (imageInfo: SingleImage, distDirName: string, dir: string): Promise<string> => {
     const imageSuffix = path.parse(imageInfo.url).ext
     if (!['.jpeg', '.png', '.jpg', '.JPG', 'JPEG', '.PNG'].includes(imageSuffix)) return 'BadSuffix'
     logger.info(`downloading ${imageInfo.url}`)
@@ -19,28 +19,25 @@ const downloader = async (imageInfo: SingleImage, dir: string): Promise<string> 
 }
 
 export default async () => {
-    if (!fs.existsSync(distDirName)) {
-        fs.mkdir(distDirName, (err: Error) => {
-            if (err) return Promise.reject(err)
-        })
-    }
     let postInfo: PostInfoWithImages
     while (postInfo = await read()) {
+        if (!fs.existsSync(postInfo.forum)) {
+            fs.mkdir(postInfo.forum, (err: Error) => {
+                if (err) return Promise.reject(err)
+            })
+        }
+        logger.info(`start download ${postInfo.postName}`)
         // 过滤出没有下载的图片
-        const notDownLoadImages = postInfo.images.filter(image => !image.downloaded && image.retryTime !== 3)
+        const notDownLoadImages = postInfo.images.filter(image => !image.downloaded)
         for (let image of notDownLoadImages) {
             try {
-                const downloadRes = await downloader(image, postInfo.postName)
+                const downloadRes = await downloader(image, postInfo.forum, postInfo.postName)
                 if (downloadRes === 'done') {
                     image.downloaded = true
                     logger.info(`download ${image.url} successful.`)
                 } else if (downloadRes === 'BadSuffix') {
                     image.retryTime = 3
                     logger.error(`${image.url} has a BadSuffix`)
-                } else {
-                    // error
-                    image.retryTime += 1
-                    logger.info(`download image ${image.url} error: ${downloadRes}, retry time: ${image.retryTime}.`)
                 }
             } catch (e) {
                 if (e.code === 'ETIMEDOUT') {
@@ -50,7 +47,7 @@ export default async () => {
             }
         }
 
-        if (postInfo.images.filter(image => !image.downloaded && image.retryTime !== 3).length === 0) {
+        if (postInfo.images.filter(image => !image.downloaded).length === 0) {
             postInfo.done = true
         }
         const updateRes = await update(postInfo)

@@ -26,9 +26,14 @@ const collectionName = '1024Image'
 
 // 所有需要爬的页面，默认20页，也就是180个帖子左右
 const ALL_PAGES = 20
-const baseUrl = 'http://t66y.com/thread0806.php?fid=16&page='
+const Daguerre = 16
+const NewTimes = 8
+const baseUrl = 'http://t66y.com/thread0806.php'
 
-const urls = [...new Array(ALL_PAGES).keys()].map(i => baseUrl + (i + 1))
+const urlMap: { [key: string]: string[] } = {
+    Daguerre: [...new Array(ALL_PAGES).keys()].map(i => baseUrl + `?fid=${Daguerre}&page=` + (i + 1)),
+    NewTimes: [...new Array(ALL_PAGES).keys()].map(i => baseUrl + `?fid=${NewTimes}&page=` + (i + 1))
+}
 
 
 const sleep = (ms: number): Promise<any> => {
@@ -52,16 +57,13 @@ const request = (url:string):Promise<Buffer> => {
     })
 }
 
-const distDirName = 'Images'
-
 export {
     request,
-    urls,
+    urlMap,
     logger,
     mongoUrl,
     sleep,
     DBName,
-    distDirName,
     collectionName,
     WIN_DIR_RESERVED
 }
