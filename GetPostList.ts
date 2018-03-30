@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio'
 import {request, logger, WIN_DIR_RESERVED} from './settings'
 import {PostInfo} from "./Interfaces"
 
-export default async (url: string): Promise<PostInfo[]> => {
+export default async (url: string, forum: string): Promise<PostInfo[]> => {
     logger.info(`requesting [${url}]`)
     let $ = cheerio.load(iconv.decode(await request(url), 'GBK'))
     let trs = $('tr.tr3.t_one.tac')
@@ -28,6 +28,7 @@ export default async (url: string): Promise<PostInfo[]> => {
             posts.push({
                 highlight,
                 postName,
+                forum,
                 postTime: $(poster).text().trim(),
                 postUrl: 'http://t66y.com/' + url,
             })

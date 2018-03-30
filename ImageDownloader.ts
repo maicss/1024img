@@ -40,10 +40,8 @@ export default async () => {
                     logger.error(`${image.url} has a BadSuffix`)
                 }
             } catch (e) {
-                if (e.code === 'ETIMEDOUT') {
-                    image.retryTime += 1
-                }
-                logger.error('download image failed, cause: ', e)
+                image.retryTime += 1
+                logger.error('download image failed, cause: ', e.message)
             }
         }
 

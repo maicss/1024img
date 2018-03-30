@@ -8,7 +8,7 @@ export default async () => {
     for (let forum in urlMap) {
         let urls = urlMap[forum]
         for (let url of urls) {
-            const postList: PostInfo[] = await GetPostList(url)
+            const postList: PostInfo[] = await GetPostList(url, forum)
             for (let post of postList) {
                 await sleep(1000)
                 const imageList: SingleImage[] = await GetImageList(post)
