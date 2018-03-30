@@ -1,5 +1,5 @@
 import {MongoClient} from 'mongodb'
-import {mongoUrl, DBName, collectionName} from './settings'
+import {mongoUrl, DBName, collectionName, logger} from './settings'
 import {PostInfoWithImages} from "./Interfaces"
 
 
@@ -14,7 +14,12 @@ import {PostInfoWithImages} from "./Interfaces"
 
 const save = async (singlePageInfo: PostInfoWithImages) => {
     let client = await MongoClient.connect(mongoUrl)
-    return (await client.db(DBName).collection(collectionName).insertOne(singlePageInfo)).ops
+    try {
+        return (await client.db(DBName).collection(collectionName).insertOne(singlePageInfo)).ops
+    } catch (e) {
+        logger.warn(e.message)
+    }
+
 }
 
 const update = async (postInfo: PostInfoWithImages): Promise<number | Error> => {

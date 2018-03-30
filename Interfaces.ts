@@ -4,7 +4,7 @@ interface PostInfo {
     postTime: string
     postUrl: string
     highlight: boolean
-    done?: boolean
+    done: boolean
     forum: string
 }
 

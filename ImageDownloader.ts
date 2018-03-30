@@ -28,7 +28,7 @@ export default async () => {
         }
         logger.info(`start download ${postInfo.postName}`)
         // 过滤出没有下载的图片
-        const notDownLoadImages = postInfo.images.filter(image => !image.downloaded)
+        const notDownLoadImages = postInfo.images.filter(image => !image.downloaded && image.retryTime !== 3)
         for (let image of notDownLoadImages) {
             try {
                 const downloadRes = await downloader(image, postInfo.forum, postInfo.postName)
@@ -45,7 +45,7 @@ export default async () => {
             }
         }
 
-        if (postInfo.images.filter(image => !image.downloaded).length === 0) {
+        if (postInfo.images.filter(image => !image.downloaded && image.retryTime !== 3).length === 0) {
             postInfo.done = true
         }
         const updateRes = await update(postInfo)

@@ -29,6 +29,7 @@ export default async (url: string, forum: string): Promise<PostInfo[]> => {
                 highlight,
                 postName,
                 forum,
+                done: false,
                 postTime: $(poster).text().trim(),
                 postUrl: 'http://t66y.com/' + url,
             })
