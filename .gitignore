@@ -7,3 +7,5 @@ node_modules
 *.js
 *.js.map
 Images/*
+Daguerre/*
+NewTimes/*
