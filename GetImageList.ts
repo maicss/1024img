@@ -13,7 +13,10 @@ export default async (postInfo: PostInfo): Promise<SingleImage[]> =>  {
     let inputs = $('input[type="image"]')
     for (let i = 0; i < inputs.length; i++) {
         const imageInfo = <SingleImage>{}
-        imageInfo.url = $(inputs[i]).attr('src')
+        imageInfo.url = $(inputs[i]).attr('data-src') || $(inputs[i]).attr('src')
+        if (typeof imageInfo.url !== 'string') {
+            console.warn(inputs[i], imageInfo.url)
+        }
         imageInfo.index = i + 1
         imageInfo.id = path.parse(imageInfo.url).name + 'I' + (i + 1)
         imageInfo.downloaded = false
